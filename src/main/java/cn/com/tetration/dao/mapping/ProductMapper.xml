@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.tetration.dao.ProductMapper">
+	<resultMap id="BaseResultMap" type="cn.com.tetration.model.Product">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="info" property="info" jdbcType="VARCHAR" />
+		<result column="level" property="level" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER"/>
+		<result column="category_id" property="category_id" jdbcType="INTEGER" />
+		<result column="insert_date" property="insert_date" jdbcType="VARCHAR" />
+		<result column="from_id" property="from_id" jdbcType="INTEGER"/>
+		<result column="to_id" property="to_id" jdbcType="INTEGER"/>
+		<result column="price" property="price" jdbcType="DOUBLE"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,title,info,level,status,category_id,insert_date,from_id,to_id,price
+	</sql>
+	<insert id="addProduct" parameterType="cn.com.tetration.request.product.AddProductRequest">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		insert into product(title,info,level,category_id,insert_date,from_id,price)values(
+		#{title,jdbcType=VARCHAR},
+		#{info,jdbcType=VARCHAR},
+		#{level,jdbcType=INTEGER},
+		#{category_id,jdbcType=INTEGER},
+		#{insert_date,jdbcType=VARCHAR},
+		#{from_id,jdbcType=INTEGER},
+		#{price,jdbcType=DOUBLE}
+		)
+	</insert>
+	<select id="getProductList" parameterType="cn.com.tetration.request.product.GetProductListRequest"
+	  		resultType="cn.com.tetration.model.Product">
+		select * from 
+		 product 
+		 where 1=1 
+		 <if test="category_id != null">
+		 	and category_id = #{category_id,jdbcType=INTEGER} 
+		 </if>
+		 <if test="from_id != null">
+			and from_id = #{from_id,jdbcType=INTEGER} 
+		</if>
+		<if test="to_id != null">
+			and to_id = #{to_id,jdbcType=INTEGER} 
+		</if> 
+		 limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+	</select>
+	
+</mapper>

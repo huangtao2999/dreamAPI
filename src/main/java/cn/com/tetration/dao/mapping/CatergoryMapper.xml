@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.tetration.dao.CatergoryMapper">
+	<resultMap id="BaseResultMap" type="cn.com.tetration.model.Catergory">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="uname" jdbcType="VARCHAR" />
+		<result column="icon" property="password" jdbcType="VARCHAR" />
+		<result column="info" property="email" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,name,icon,info
+	</sql>
+	<select id="getList" parameterType="cn.com.tetration.request.catergory.GetListRequest"
+	  		resultType="cn.com.tetration.model.Catergory">
+		select * from 
+		 catergory 
+		 limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+	</select>
+	
+</mapper>
